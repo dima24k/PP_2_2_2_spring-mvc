@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import web.service.CarService;
 
+import web.service.CarService;
 @Controller
 @RequestMapping("/cars")
 public class CarController {
@@ -22,11 +22,11 @@ public class CarController {
 
     @GetMapping
     public String printCarTable(@RequestParam(value = "count", required = false) Integer count, Model model) {
-        if (count == null ) {
-            count = 0;
+        if (count == null || count >= 5) {
+            model.addAttribute("cars", carService.getAllCars() );
+        } else if (count >= 1){
+            model.addAttribute("cars", carService.getCarsByCount(count) );
         }
-        model.addAttribute("cars", carService.getCarList(count) );
-
         return "carsTable";
     }
 }
